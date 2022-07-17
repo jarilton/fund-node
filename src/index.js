@@ -1,34 +1,32 @@
 const express = require('express');
+const { v4: uuidv4 } = require("uuid");
 
 const app = express();
 
-app.use(express.json()); 
+app.use(express.json());
 
-app.get('/courses', (req, res) => {
+const customers = [];
+
+app.get('/account', (req, res) =>{
     const query = req.query;
     console.log(query);
-    return res.json(["Curso: 1", "Curso: 2", "Curso: 3"])
+    return res.json(["Name 1: Jamal", "Name 2: Patricia"]);
 })
 
-app.post('/courses', (req, res) => {
-    const body = req.body;
-    console.log(body);
-    return res.json(["Curso: 1", "Curso: 2", "Curso: 3", "Curso: 4"])
+app.post('/account', (req, res) => {
+    const { cpf, name } = req.body;
+
+    const id = uuidv4();
+
+    customers.push({
+        cpf,
+        name,
+        id,
+        statement: [],
+    });
+
+    return response.status(201).send();
+
 })
 
-app.put('/courses/:id', (req, res) => {
-    const { id } = req.params;
-    console.log(id);
-    return res.json(["Curso: 6", "Curso: 2", "Curso: 3", "Curso: 4"])
-})
-
-app.patch('/courses/:id', (req, res) => {
-    return res.json(["Curso: 6", "Curso: 2", "Curso: 3", "Curso: 4"])
-})
-
-app.delete('/courses/:id', (req, res) => {
-    return res.json(["Curso: 1", "Curso: 2", "Curso: 4"])
-})
-
-
-app.listen(3306); // serve para startar a aplicação
+app.listen(3333); 
