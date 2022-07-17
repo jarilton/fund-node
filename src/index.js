@@ -8,6 +8,8 @@ app.use(express.json());
 
 const customers = [];
 
+//app.use(verifyIfExistAccountCPF);
+
 //middleware
 function verifyIfExistAccountCPF(req, res, next) {
     const { cpf } = req.headers;
@@ -29,6 +31,23 @@ app.get('/statement', verifyIfExistAccountCPF, (req, res) => {
 
     return response.json(customer.statement);
 
+})
+
+app.post('/deposit', verifyIfExistAccountCPF, (req, res) => {
+    const { description, amount } = req.body;
+
+    const { customer } = req;
+
+    const statementOperation = {
+        description,
+        amount,
+        created_at: new Date(),
+        type: "credit",
+    };
+
+    customer.statement.push(statementOperation);
+
+    return res.status(201).send();
 })
 
 app.post('/account', (req, res) => {
