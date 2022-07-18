@@ -69,6 +69,21 @@ app.get('/statement/date', verifyIfExistAccountCPF, (req, res) => {
 
 })
 
+app.put('/account', verifyIfExistAccountCPF, (req, res) => {
+    const { name } = req.body;
+    const { customer } = req;
+
+    customer.name = name;
+
+    return response.status(201).send();
+})
+
+app.get('/account', verifyIfExistAccountCPF, (req, res) => {
+    const { customer } = req;
+
+    return res.json(customer)
+}) 
+
 app.post('/deposit', verifyIfExistAccountCPF, (req, res) => {
     const {
         description,
